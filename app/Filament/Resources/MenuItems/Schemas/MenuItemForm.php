@@ -1,0 +1,38 @@
+<?php
+
+namespace App\Filament\Resources\MenuItems\Schemas;
+
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
+use Filament\Schemas\Schema;
+
+class MenuItemForm
+{
+    public static function configure(Schema $schema): Schema
+    {
+        return $schema
+            ->components([
+                TextInput::make('location')
+                    ->required(),
+                Select::make('parent_id')
+                    ->relationship('parent', 'title'),
+                Select::make('branch_id')
+                    ->relationship('branch', 'name'),
+                TextInput::make('title')
+                    ->required(),
+                TextInput::make('url')
+                    ->url()
+                    ->required(),
+                TextInput::make('icon'),
+                Toggle::make('open_in_new_tab')
+                    ->required(),
+                TextInput::make('sort_order')
+                    ->required()
+                    ->numeric()
+                    ->default(0),
+                Toggle::make('is_active')
+                    ->required(),
+            ]);
+    }
+}
