@@ -2,52 +2,47 @@
 
 namespace App\Filament\Resources\Branches\Schemas;
 
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\Toggle;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Select;
+use Filament\Schemas\Components\Textarea;
+use Filament\Schemas\Components\TextInput;
+use Filament\Schemas\Components\Toggle;
 use Filament\Schemas\Schema;
 
 class BranchForm
 {
     public static function configure(Schema $schema): Schema
     {
-        return $schema
-            ->components([
-                Select::make('legal_entity_id')
-                    ->relationship('legalEntity', 'name'),
-                TextInput::make('name')
-                    ->required(),
-                TextInput::make('city')
-                    ->required(),
-                TextInput::make('slug')
-                    ->required(),
-                TextInput::make('address')
-                    ->required(),
-                TextInput::make('phone')
-                    ->tel()
-                    ->required(),
-                TextInput::make('email')
-                    ->label('Email address')
-                    ->email(),
-                Textarea::make('working_hours')
-                    ->columnSpanFull(),
-                TextInput::make('vk'),
-                TextInput::make('telegram')
-                    ->tel(),
-                TextInput::make('whatsapp'),
-                TextInput::make('lat')
-                    ->numeric(),
-                TextInput::make('lng')
-                    ->numeric(),
-                TextInput::make('seo_title'),
-                Textarea::make('seo_description')
-                    ->columnSpanFull(),
-                TextInput::make('seo_h1'),
-                Textarea::make('intro_text')
-                    ->columnSpanFull(),
-                Toggle::make('is_active')
-                    ->required(),
-            ]);
+        return $schema->components([
+            Section::make('Основное')->schema([
+                TextInput::make('name')->label('Название филиала')->required(),
+                TextInput::make('city')->label('Город')->required(),
+                TextInput::make('slug')->label('URL (латиница)')->required()->unique(ignoreRecord: true)
+                    ->helperText('например: sankt-peterburg-nevskij'),
+                TextInput::make('address')->label('Адрес')->required(),
+                TextInput::make('phone')->label('Телефон')->tel()->required(),
+                TextInput::make('email')->label('E-mail')->email(),
+                Select::make('legal_entity_id')->label('Юрлицо (реквизиты в подвале)')
+                    ->relationship('legalEntity', 'name')->nullable()
+                    ->helperText('Пусто = реквизиты сети по умолчанию'),
+            ])->columns(2),
+
+            Section::make('Соцсети и часы работы')->schema([
+                TextInput::make('vk')->label('ВКонтакте')->url(),
+                TextInput::make('telegram')->label('Telegram'),
+                TextInput::make('whatsapp')->label('WhatsApp'),
+                Textarea::make('working_hours')->label('Часы работы (JSON)')
+                    ->helperText('например: {"mon":"10:00-20:00","tue":"10:00-20:00"}'),
+            ])->columns(2),
+
+            Section::make('SEO')->schema([
+                TextInput::make('seo_title')->label('SEO Title'),
+                Textarea::make('seo_description')->label('SEO Description'),
+                TextInput::make('seo_h1')->label('Заголовок H1'),
+                Textarea::make('intro_text')->label('Текст-интро на странице филиала'),
+            ]),
+
+            Toggle::make('is_active')->label('Филиал активен')->default(true),
+        ]);
     }
 }
