@@ -12,9 +12,26 @@ class BranchController extends Controller
 
         $legalEntity = $branch->getLegalEntityOrDefault();
 
+        $schema = [
+            '@context' => 'https://schema.org',
+            '@type' => 'MedicalBusiness',
+            'name' => $branch->name,
+            'address' => [
+                '@type' => 'PostalAddress',
+                'addressLocality' => $branch->city,
+                'streetAddress' => $branch->address,
+            ],
+            'telephone' => $branch->phone,
+        ];
+
+        if ($legalEntity) {
+            $schema['legalName'] = $legalEntity->name;
+        }
+
         return view('branch', [
             'branch' => $branch,
             'legalEntity' => $legalEntity,
+            'schema' => $schema,
         ]);
     }
 }
