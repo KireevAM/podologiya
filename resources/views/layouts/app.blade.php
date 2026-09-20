@@ -10,25 +10,49 @@
 <body>
 
 <header class="site-header">
-    <div class="container">
-        <a href="/" class="logo">{{ $networkName }}</a>
+    <div class="container header-grid">
+
+        <a href="/" class="header-logo">
+            @if(file_exists(public_path('img/logo.png')))
+                <img src="/img/logo.png" alt="{{ $networkName }}">
+            @else
+                <span class="logo-badge">🦶</span>
+            @endif
+        </a>
+
+        @if($scheduleLabel)
+            <div class="header-hours">
+                <span class="hours-icon">🕒</span>
+                <div>
+                    <strong>{{ $scheduleLabel }}</strong><br>
+                    <small>Приём ведётся по предварительной записи</small>
+                </div>
+            </div>
+        @endif
+
+        <select class="branch-select" onchange="if(this.value) location.href=this.value">
+            <option value="">Выберите филиал</option>
+            @foreach($branches as $b)
+                <option value="/filialy/{{ $b->slug }}" {{ isset($branch) && $branch->id === $b->id ? 'selected' : '' }}>
+                    {{ $b->city }} — {{ $b->name }}
+                </option>
+            @endforeach
+        </select>
+
+        @php $phone = $branch->phone ?? $defaultPhone; @endphp
+        @if($phone)
+            <a class="header-phone" href="tel:{{ preg_replace('/[^+0-9]/', '', $phone) }}">{{ $phone }}</a>
+        @endif
+
+        <a class="btn header-cta" href="{{ isset($branch) ? '#zapis' : '/#zapis' }}">🕐 Запись<br>на приём</a>
+    </div>
+
+    <div class="container header-nav">
         <nav class="main-nav">
             @foreach($menuHeader as $item)
                 <a href="{{ $item->url }}">{{ $item->title }}</a>
             @endforeach
         </nav>
-        <select class="branch-select" onchange="if(this.value) location.href=this.value">
-            <option value="">— Филиал —</option>
-            @foreach($branches as $b)
-                <option value="/filialy/{{ $b->slug }}" {{ isset($branch) && $branch->id === $b->id ? 'selected' : '' }}>
-                    {{ $b->city }}
-                </option>
-            @endforeach
-        </select>
-        @if(isset($branch))
-            <a class="header-phone" href="tel:{{ $branch->phone }}">{{ $branch->phone }}</a>
-            <a class="btn" href="#zapis">Записаться</a>
-        @endif
     </div>
 </header>
 

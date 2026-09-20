@@ -91,3 +91,20 @@ a .card:hover { transform: translateY(-4px); box-shadow: 0 10px 24px rgba(2,6,23
     .hero h1 { font-size: 28px; }
     .header-phone { margin-left: 0; width: 100%; text-align: center; }
 }
+
+/* === Шапка v2: лого | часы | филиалы | телефон | запись === */
+.header-grid { display: flex; align-items: center; gap: 22px; }
+.header-logo img { height: 58px; width: auto; display: block; }
+.logo-badge { width: 58px; height: 58px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 28px; }
+.header-hours { display: flex; align-items: center; gap: 10px; font-size: 14px; line-height: 1.35; }
+.header-hours small { color: var(--muted); }
+.hours-icon { font-size: 24px; }
+.header-cta { text-align: center; line-height: 1.25; font-size: 14px; padding: 10px 20px; }
+.header-nav { border-top: 1px solid #eef2f7; padding: 8px 20px; }
+.branch-select { max-width: 190px; padding: 10px 12px; }
+
+@media (max-width: 960px) {
+    .header-grid { flex-wrap: wrap; justify-content: center; gap: 14px; }
+    .header-nav { text-align: center; }
+    .header-hours { order: 3; width: 100%; justify-content: center; }
+}

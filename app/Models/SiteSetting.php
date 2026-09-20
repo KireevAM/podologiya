@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class SiteSetting extends Model
 {
     protected $fillable = [
-        'network_name', 'default_phone', 'default_email',
+        'network_name', 'schedule_label', 'default_phone', 'default_email',
         'vk', 'telegram', 'whatsapp',
         'working_hours_default', 'footer_copyright',
     ];
