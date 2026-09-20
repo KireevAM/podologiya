@@ -30,19 +30,42 @@
             </div>
         @endif
 
-        <select class="branch-select" onchange="if(this.value) location.href=this.value">
-            <option value="">Выберите филиал</option>
-            @foreach($branches as $b)
-                <option value="/filialy/{{ $b->slug }}" {{ isset($branch) && $branch->id === $b->id ? 'selected' : '' }}>
-                    {{ $b->city }} — {{ $b->name }}
-                </option>
-            @endforeach
-        </select>
+        <div class="header-branch">
+            <select class="branch-select" onchange="if(this.value) location.href=this.value">
+                <option value="">Выберите филиал</option>
+                @foreach($branches as $b)
+                    <option value="/filialy/{{ $b->slug }}" {{ isset($branch) && $branch->id === $b->id ? 'selected' : '' }}>
+                        {{ $b->city }} — {{ $b->name }}
+                    </option>
+                @endforeach
+            </select>
+            @isset($branch)
+                <div class="header-addr">
+                    <b>{{ $branch->city }}</b><br>{{ $branch->address }}
+                </div>
+            @endisset
+        </div>
 
-        @php $phone = $branch->phone ?? $defaultPhone; @endphp
-        @if($phone)
-            <a class="header-phone" href="tel:{{ preg_replace('/[^+0-9]/', '', $phone) }}">{{ $phone }}</a>
-        @endif
+        <div class="header-contacts">
+            @isset($branch)
+                <div class="header-messengers">
+                    @if($branch->telegram)
+                        <a href="{{ $branch->telegram }}" target="_blank" rel="nofollow" title="Telegram">✈️</a>
+                    @endif
+                    @if($branch->whatsapp)
+                        <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $branch->whatsapp) }}" target="_blank" rel="nofollow" title="WhatsApp">💬</a>
+                    @endif
+                    @if($branch->vk)
+                        <a href="{{ $branch->vk }}" target="_blank" rel="nofollow" title="ВКонтакте">VK</a>
+                    @endif
+                </div>
+            @endisset
+
+            @php $phone = $branch->phone ?? $defaultPhone; @endphp
+            @if($phone)
+                <a class="header-phone" href="tel:{{ preg_replace('/[^+0-9]/', '', $phone) }}">{{ $phone }}</a>
+            @endif
+        </div>
 
         <a class="btn header-cta" href="{{ isset($branch) ? '#zapis' : '/#zapis' }}">🕐 Запись<br>на приём</a>
     </div>
@@ -80,6 +103,9 @@
         </div>
     </div>
 </footer>
+
+{{-- Виджет онлайн-записи YClients --}}
+<script type="text/javascript" src="https://w1002723.yclients.com/widgetJS" charset="UTF-8"></script>
 
 </body>
 </html>
