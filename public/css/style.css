@@ -120,3 +120,15 @@ a .card:hover { transform: translateY(-4px); box-shadow: 0 10px 24px rgba(2,6,23
     .header-branch { align-items: center; }
     .header-addr { text-align: center; }
 }
+
+/* === Шапка v3: адрес под филиалом + мессенджеры === */
+.header-branch { display: flex; flex-direction: column; gap: 6px; }
+.header-addr { font-size: 13px; line-height: 1.35; color: var(--muted); }
+.header-contacts { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; margin-left: auto; }
+.header-messengers { display: flex; gap: 10px; font-size: 18px; }
+.header-messengers a { background: #f0fdfa; border: 1px solid #99f6e4; border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; }
+@media (max-width: 960px) {
+    .header-contacts { align-items: center; margin-left: 0; }
+    .header-branch { align-items: center; }
+    .header-addr { text-align: center; }
+}
