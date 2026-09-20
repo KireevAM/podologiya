@@ -19,6 +19,10 @@ use Filament\Tables\Table;
 class LegalEntityResource extends Resource
 {
     protected static ?string $model = LegalEntity::class;
+    protected static ?string $modelLabel = 'Юрлицо';
+    protected static ?string $pluralModelLabel = 'Юрлица';
+    protected static ?string $navigationLabel = 'Юрлица';
+    protected static ?int $navigationSort = 2;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 

@@ -19,6 +19,10 @@ use Filament\Tables\Table;
 class MenuItemResource extends Resource
 {
     protected static ?string $model = MenuItem::class;
+    protected static ?string $modelLabel = 'Пункт меню';
+    protected static ?string $pluralModelLabel = 'Меню сайта';
+    protected static ?string $navigationLabel = 'Меню сайта';
+    protected static ?int $navigationSort = 3;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
