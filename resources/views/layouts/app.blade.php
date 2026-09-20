@@ -4,49 +4,56 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', $networkName)</title>
-    <meta name="description" content="@yield('meta_description', '')">
+    <meta name="description" content="@yield('meta_description', 'Сеть подологических клиник')">
+    <link rel="stylesheet" href="/css/style.css">
 </head>
-<body style="margin:0; font-family: sans-serif; line-height:1.6; color:#1f2937;">
+<body>
 
-<header style="background:#0f172a; color:#fff; padding:14px 24px;">
-    <div style="max-width:1000px; margin:0 auto; display:flex; align-items:center; gap:24px; flex-wrap:wrap;">
-        <a href="/" style="color:#fff; font-weight:bold; font-size:20px; text-decoration:none;">{{ $networkName }}</a>
-
-        <nav style="display:flex; gap:18px; flex-wrap:wrap;">
+<header class="site-header">
+    <div class="container">
+        <a href="/" class="logo">{{ $networkName }}</a>
+        <nav class="main-nav">
             @foreach($menuHeader as $item)
-                <a href="{{ $item->url }}" style="color:#cbd5e1; text-decoration:none;">{{ $item->title }}</a>
+                <a href="{{ $item->url }}">{{ $item->title }}</a>
             @endforeach
         </nav>
-
-        <select onchange="if(this.value) location.href=this.value" style="margin-left:auto; padding:6px;">
-            <option value="">— Выбор филиала —</option>
+        <select class="branch-select" onchange="if(this.value) location.href=this.value">
+            <option value="">— Филиал —</option>
             @foreach($branches as $b)
                 <option value="/filialy/{{ $b->slug }}" {{ isset($branch) && $branch->id === $b->id ? 'selected' : '' }}>
-                    {{ $b->city }} — {{ $b->name }}
+                    {{ $b->city }}
                 </option>
             @endforeach
         </select>
+        @if(isset($branch))
+            <a class="header-phone" href="tel:{{ $branch->phone }}">{{ $branch->phone }}</a>
+            <a class="btn" href="#zapis">Записаться</a>
+        @endif
     </div>
 </header>
 
-<main style="max-width:1000px; margin:32px auto; padding:0 24px;">
+<main>
     @yield('content')
 </main>
 
-<footer style="background:#111827; color:#9ca3af; padding:24px; font-size:14px;">
-    <div style="max-width:1000px; margin:0 auto;">
-        @if(isset($legalEntity) && $legalEntity)
-            <p style="color:#e5e7eb;"><strong>{{ $legalEntity->name }}</strong></p>
-            @if($legalEntity->inn)
-                <p>ИНН: {{ $legalEntity->inn }} @if($legalEntity->ogrn)· ОГРН: {{ $legalEntity->ogrn }}@endif</p>
+<footer class="site-footer">
+    <div class="container">
+        <div>
+            @if(isset($legalEntity) && $legalEntity)
+                <strong>{{ $legalEntity->name }}</strong><br>
+                @if($legalEntity->inn)ИНН: {{ $legalEntity->inn }} @if($legalEntity->ogrn)· ОГРН: {{ $legalEntity->ogrn }}@endif<br>@endif
+                @if($legalEntity->legal_address){{ $legalEntity->legal_address }}<br>@endif
             @endif
-            @if($legalEntity->legal_address)<p>{{ $legalEntity->legal_address }}</p>@endif
-        @endif
-        <nav style="margin-top:12px; display:flex; gap:16px; flex-wrap:wrap;">
-            @foreach($menuFooter as $item)
-                <a href="{{ $item->url }}" style="color:#9ca3af; text-decoration:none;">{{ $item->title }}</a>
-            @endforeach
-        </nav>
+            <nav style="margin-top:10px;">
+                @foreach($menuFooter as $item)
+                    <a href="{{ $item->url }}">{{ $item->title }}</a>
+                @endforeach
+            </nav>
+        </div>
+        <div>
+            {{ $networkName }}<br>
+            © {{ date('Y') }}
+        </div>
     </div>
 </footer>
 
